@@ -9,8 +9,8 @@ import { Book, Image, Author } from "../shared/book";
 })
 export class BookListComponent implements OnInit {
   books: Book[];
-
-  @Output{} showDetailsEvent = new EventEmitter<Book>();
+  @Input() book:Book
+  @Output() showDetailsEvent = new EventEmitter<Book>();
 
   constructor() {}
 
@@ -52,6 +52,10 @@ export class BookListComponent implements OnInit {
     ];
 
     console.log(this.books);
+  }
+
+  showDetails (book: Book) {
+    this.showDetailsEvent.emit(book);
   }
 
 }
