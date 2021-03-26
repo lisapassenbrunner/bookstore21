@@ -50,4 +50,8 @@ export class BookListComponent implements OnInit {
 
     console.log(this.books);
   }
+
+  btnHandler() {
+    console.log("clicked");
+  }
 }
