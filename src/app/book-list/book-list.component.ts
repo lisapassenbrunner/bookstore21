@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { Book, Image, Author } from "../shared/book";
+
 
 @Component({
   selector: "bs-book-list",
@@ -8,6 +9,8 @@ import { Book, Image, Author } from "../shared/book";
 })
 export class BookListComponent implements OnInit {
   books: Book[];
+
+  @Output{} showDetailsEvent = new EventEmitter<Book>();
 
   constructor() {}
 
@@ -51,7 +54,4 @@ export class BookListComponent implements OnInit {
     console.log(this.books);
   }
 
-  btnHandler() {
-    console.log("clicked");
-  }
 }

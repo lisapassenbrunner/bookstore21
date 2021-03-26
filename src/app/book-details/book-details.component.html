@@ -1,0 +1,6 @@
+<div class="ui-grid" *ngIf="book">
+
+  <div class="four wide column">
+    <image class="ui large image" *ngIf="book.images && book.images[0]" [src]="book.images[0].url"/>
+  </div>
+</div>
