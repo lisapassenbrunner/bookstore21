@@ -4,7 +4,7 @@ import { Book, Author, Image } from "../shared/book";
 @Component({
   selector: "a.bs-book-list-item",
   templateUrl: "./book-list-item.component.html",
-  styleUrls: ["./book-list-item.component.css"]
+  styleUrls: []
 })
 export class BookListItemComponent implements OnInit {
   @Input() book: Book;
