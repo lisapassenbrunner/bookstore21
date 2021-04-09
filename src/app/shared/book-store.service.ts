@@ -11,6 +11,7 @@ export class BookStoreService {
 
   constructor(private http: HttpClient) {}
 
+//holt Daten aus der Datenbank
   getAll(): Observable<Array<Book>> {
     return this.http
       .get(`${this.api}/books`)
