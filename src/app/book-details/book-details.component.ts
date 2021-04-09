@@ -21,4 +21,10 @@ export class BookDetailsComponent implements OnInit {
   getRating(num: number) {
     return new Array(num);
   }
+
+  removeBook() {
+    if (confirm("Buch löschen? Sind sie sicher?")) {
+      console.log("delete");
+    }
+  }
 }
