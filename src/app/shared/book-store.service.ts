@@ -24,6 +24,12 @@ export class BookStoreService {
       .pipe(catchError(this.errorHandler));
   }
 
+  remove(isbn: string) : Observable<any>{
+    return this.http.delete(`${this.api}/book/${isbn}`)
+    .pipe(retry(3))
+    .pipe(catchError(this.errorHandler));
+  }
+
   private errorHandler(error: Error | any): Observable<any> {
     return throwError(error);
   }
