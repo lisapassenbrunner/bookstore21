@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
@@ -10,15 +10,15 @@ import {
 import { BookFactory } from "../shared/book-factory";
 import { BookStoreService } from "../shared/book-store.service";
 import { BookFormErrorMessages } from "./book-form-error-messages";
+import { Book } from "../shared/book";
 
 @Component({
-  selector: "app-book-form",
+  selector: "bs-book-form",
   templateUrl: "./book-form.component.html",
-  styleUrls: ["./book-form.component.css"]
+  styles: []
 })
 export class BookFormComponent implements OnInit {
   bookForm: FormGroup;
-  //zwar leer, aber existiert schon
   book = BookFactory.empty();
   isUpdatingBook = false;
   images: FormArray;
@@ -31,9 +31,8 @@ export class BookFormComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const isbn = this.route.snapshot.params["isbn"];
-    //asynchroner Block
     if (isbn) {
       this.isUpdatingBook = true;
       this.bs.getSingle(isbn).subscribe(book => {
@@ -41,10 +40,13 @@ export class BookFormComponent implements OnInit {
         this.initBook();
       });
     }
+
     this.initBook();
   }
 
   initBook() {
+    this.buildThumbnailsArray();
+
     this.bookForm = this.fb.group({
       id: this.book.id,
       title: [this.book.title, Validators.required],
@@ -57,24 +59,48 @@ export class BookFormComponent implements OnInit {
           Validators.maxLength(13)
         ]
       ],
+      published: [this.book.published, Validators.required],
       description: this.book.description,
-      published: this.book.published
+      rating: [this.book.rating, [Validators.min(0), Validators.max(10)]],
+      images: this.images
     });
 
-    //überprüfen ob sich was ändert
     this.bookForm.statusChanges.subscribe(() => this.updateErrorMessages());
   }
 
-  updateErrorMessages() {
-    console.log("Form invalid?" + this.bookForm.invalid);
-    this.errors = {};
+  buildThumbnailsArray() {
+    this.images = this.fb.array([]);
+    for (let img of this.book.images) {
+      let fg = this.fb.group({
+        id: new FormControl(img.id),
+        url: new FormControl(img.url, [Validators.required]),
+        title: new FormControl(img.title, [Validators.required])
+      });
+      this.images.push(fg);
+    }
+  }
 
+  addThumbnailControl() {
+    this.images.push(this.fb.group({ url: null, title: null }));
+  }
+
+  submitForm() {
+    this.bookForm.value.images = this.bookForm.value.images.filter(
+      thumbnail => thumbnail.url
+    );
+
+    const book: Book = BookFactory.fromObject(this.bookForm.value);
+    console.log(book);
+  }
+
+  updateErrorMessages() {
+    console.log("form invalid? " + this.bookForm.invalid);
+    this.errors = {};
     for (const message of BookFormErrorMessages) {
       const control = this.bookForm.get(message.forControl);
 
       if (
         control &&
-        //binding zwischen Model und Formular nicht konsistent, weiß nicht mehr, dass es dazu gehört
         control.dirty &&
         control.invalid &&
         control.errors[message.forValidator] &&
