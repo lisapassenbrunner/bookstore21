@@ -90,7 +90,16 @@ export class BookFormComponent implements OnInit {
     );
 
     const book: Book = BookFactory.fromObject(this.bookForm.value);
+    book.authors = this.book.authors;
     console.log(book);
+
+    if (this.isUpdatingBook) {
+      this.bs.update(book).subscribe(res => {
+        this.router.navigate(["../../books", book.isbn], {
+          relativeTo: this.route
+        });
+      });
+    }
   }
 
   updateErrorMessages() {
