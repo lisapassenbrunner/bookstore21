@@ -1,5 +1,32 @@
 <h1>Buchformular</h1>
-<form class="ui large form" [formGroup]="bookForm" [ngSubmit]="submitForm()">
+<form class="ui large form" [formGroup]="bookForm">
+  <input type="hidden" name="id">
+  <div class="field">
+
+    <label>Buchtitel</label>
+    <input formControlName="title">
+
+  </div>
+
+  <div class="field">
+    <label>Subtitle</label>
+    <input formControlName="subtitle">
+  </div>
+
+  <div class="field" [class.disabled]="isUpdatingBook">
+    <label>ISBN</label>
+    <input formControlName="isbn">
+  </div>
+
+  <div class="field">
+    <label>Erscheinungsdatum</label>
+    <input type="date" formControlName="published">
+  </div>
+
+  <div class="field">
+    <label>Beschreibung</label>
+    <textarea formControlName="description" rows="3"></textarea>
+  </div>
 
   <button type="submit" class="ui button" [disabled]="bookForm.invalid">Speichern</button>
 </form>
