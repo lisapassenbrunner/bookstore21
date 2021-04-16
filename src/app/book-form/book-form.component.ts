@@ -9,6 +9,7 @@ import {
 } from "@angular/forms";
 import { BookFactory } from "../shared/book-factory";
 import { BookStoreService } from "../shared/book-store.service";
+import { BookFormErrorMessages } from "./book-form-error-messages";
 
 @Component({
   selector: "app-book-form",
@@ -21,6 +22,7 @@ export class BookFormComponent implements OnInit {
   book = BookFactory.empty();
   isUpdatingBook = false;
   images: FormArray;
+  errors: { [key: string]: string } = {};
 
   constructor(
     private fb: FormBuilder,
@@ -58,5 +60,28 @@ export class BookFormComponent implements OnInit {
       description: this.book.description,
       published: this.book.published
     });
+
+    //überprüfen ob sich was ändert
+    this.bookForm.statusChanges.subscribe(() => this.updateErrorMessages());
+  }
+
+  updateErrorMessages() {
+    console.log("Form invalid?" + this.bookForm.invalid);
+    this.errors = {};
+
+    for (const message of BookFormErrorMessages) {
+      const control = this.bookForm.get(message.forControl);
+
+      if (
+        control &&
+        //binding zwischen Model und Formular nicht konsistent, weiß nicht mehr, dass es dazu gehört
+        control.dirty &&
+        control.invalid &&
+        control.errors[message.forValidator] &&
+        !this.errors[message.forControl]
+      ) {
+        this.errors[message.forControl] = message.text;
+      }
+    }
   }
 }
