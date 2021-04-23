@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import{AppRoutingModule} from './app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
 import { BookFormComponent } from './book-form/book-form.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
@@ -22,7 +23,8 @@ import { BookFormComponent } from './book-form/book-form.component';
     BookListItemComponent,
     BookDetailsComponent,
     HomeComponent,
-    BookFormComponent
+    BookFormComponent,
+    LoginComponent
   ],
   bootstrap: [AppComponent],
   providers: [BookStoreService]
