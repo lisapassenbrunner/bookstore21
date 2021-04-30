@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Book } from "../shared/book";
 import { BookStoreService } from "../shared/book-store.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AuthenticationService } from "../shared/authentication.service";
 
 @Component({
   selector: "bs-book-details",
@@ -14,7 +15,8 @@ export class BookDetailsComponent implements OnInit {
   constructor(
     private bs: BookStoreService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
